@@ -1,0 +1,7 @@
+sudo grubby --info /boot/vmlinuz-3.10.0-1062.4.3.rt56.1029.el7.x86_64
+
+sudo grubby --set-default-index=2
+
+sudo grubby --args=idle=poll intel_idle.max_cstate=0 processor.max_cstate=1 skew_tick=1 --update-kernel=/boot/vmlinuz-3.10.0-1062.4.3.rt56.1029.el7.x86_64
+
+sudo grubby --default-kernel
