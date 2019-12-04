@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+#
+#  Copyright (c) 2018 - 2019 Jeong Han Lee
+#  Copyright (c) 2018 - 2019 European Spallation Source ERIC
+#
+#  The program is free software: you can redistribute
+#  it and/or modify it under the terms of the GNU General Public License
+#  as published by the Free Software Foundation, either version 2 of the
+#  License, or any newer version.
+#
+#  This program is distributed in the hope that it will be useful, but WITHOUT
+#  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+#  more details.
+#
+#  You should have received a copy of the GNU General Public License along with
+#  this program. If not, see https://www.gnu.org/licenses/gpl-2.0.txt
+#
+# Author  : Jeong Han Lee
+# email   : jeonghan.lee@gmail.com
+# Date    : Thursday, April 25 18:05:06 CEST 2019
+#
+
+
+function pushd { builtin pushd "$@" > /dev/null; }
+function popd  { builtin popd  "$@" > /dev/null; }
+
+
+function create_group
+{
+    local group=$1;shift;
+    # groupadd -f returns OK if the group exists
+    ${SUDO_CMD} groupadd -f $group
+}
+
+
+function add_user_to_group
+{
+    local user=$1; shift;
+    local group=$1; shift;
+    ${SUDO_CMD} usermod -aG $group $user
+}
+
+
+
+
+function get_conf_list
+{
+    local empty_string="";
+    declare -a entry=();
+ 
+    while IFS= read -r line_data; do
+	if [ "$line_data" ]; then
+	    # Skip command #
+	    [[ "$line_data" =~ ^#.*$ ]] && continue
+	    entry[i]="${line_data}"
+	    ((++i))
+	fi
+    done < $1
+ 
+    echo ${entry[@]}
+}
+
+
+
+
+function die
+{
+    error=${1:-1}
+    ## exits with 1 if error number not given
+    shift
+    [ -n "$*" ] &&
+	printf "%s%s: %s\n" "$scriptname" ${version:+" ($version)"} "$*" >&2
+    exit "$error"
+}
+
+# the following function drop_from_path was copied from
+# the ROOT build system in ${ROOTSYS}/bin/, and modified
+# a little to return its result 
+# Wednesday, July 11 23:19:00 CEST 2018, jhlee 
+drop_from_path ()
+{
+    #
+    # Assert that we got enough arguments
+    if test $# -ne 2 ; then
+	echo "drop_from_path: needs 2 arguments"
+	return 1
+    fi
+
+    local p="$1"
+    local drop="$2"
+
+    local new_path=`echo "$p" | sed -e "s;:${drop}:;:;g" \
+                 -e "s;:${drop};;g"   \
+                 -e "s;${drop}:;;g"   \
+                 -e "s;${drop};;g";`
+    echo ${new_path}
+}
+
+
+set_variable ()
+{
+    if test $# -ne 2 ; then
+	echo "set_variable: needs 2 arguments"
+	return 1
+    fi
+
+    local old_path="$1"
+    local add_path="$2"
+
+    local new_path=""
+    local system_old_path=""
+
+    if [ -z "$old_path" ]; then
+	new_path=${add_path}
+    else
+	system_old_path=$(drop_from_path "${old_path}" "${add_path}")
+	if [ -z "$system_old_path" ]; then
+	    new_path=${add_path}
+	else
+	    new_path=${add_path}:${system_old_path}
+	fi
+   
+    fi
+
+    echo "${new_path}"
+    
+}
+
+
+function find_dist
+{
+
+    local dist_id dist_cn dist_rs PRETTY_NAME
+    
+    if [[ -f /usr/bin/lsb_release ]] ; then
+     	dist_id=$(lsb_release -is)
+     	dist_cn=$(lsb_release -cs)
+     	dist_rs=$(lsb_release -rs)
+     	echo "$dist_id ${dist_cn} ${dist_rs}"
+    else
+     	eval $(cat /etc/os-release | grep -E "^(PRETTY_NAME)=")
+	echo "${PRETTY_NAME}"
+    fi
+ 
+}
+
+
+function find_existent_boot_parameter
+{
+
+    local GRUB_CMDLINE_LINUX
+    eval $(cat ${GRUB_CONF} | grep -E "^(GRUB_CMDLINE_LINUX)=")
+    echo "${GRUB_CMDLINE_LINUX}"
+ 
+}
+
+
+function yes_or_no_to_go
+{
+
+
+    printf  "\n";
+    
+    printf  "*************** Warning!!! ***************\n";
+    printf  "*************** Warning!!! ***************\n";
+    printf  "*************** Warning!!! ***************\n";
+    printf  ">\n";
+    printf  "> You should know how to recover them if it doesn't work!\n";
+    printf  ">\n";
+     
+    printf  "> Linux RT Kernel Installation.\n"
+    printf  "> \n";
+    printf  "> $1\n";
+    read -p ">> Do you want to continue (y/N)? " answer
+    case ${answer:0:1} in
+	y|Y )
+	    printf ">> The following kernel will be installed ......\n ";
+	    ;;
+	* )
+            printf ">> Stop here.\n";
+	    exit;
+	    ;;
+    esac
+
+}
+
+
+function disable_system_service
+{
+    local disable_services=$1; shift
+    
+    printf "Disable service ... %s\n" "${disable_services}"
+    ${SUDO_CMD} systemctl stop    ${disable_services} | echo ">>> Stop    : $disable_services do not exist"
+    ${SUDO_CMD} systemctl disable ${disable_services} | echo ">>> Disalbe : $disable_services do not exist"
+    ${SUDO_CMD} systemctl mask    ${disable_services} | echo ">>> Mask    : $disable_services do not exist"
+
+}
+
+
+common_services="$(get_conf_list ${SC_TOP}/.SYSTEMD_SERVICES_COMMON)"
+essvm_services="$(get_conf_list ${SC_TOP}/.SYSTEMD_SERVICES_ESSVM)"
+
+
+

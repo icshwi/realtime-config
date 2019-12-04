@@ -1,0 +1,35 @@
+[root@mcu010 rt-tests]# ./hwlatdetect --duration=600s
+hwlatdetect:  test duration 600 seconds
+   detector: tracer
+   parameters:
+        Latency threshold: 10us
+        Sample window:     1000000us
+        Sample width:      500000us
+     Non-sampling period:  500000us
+        Output File:       None
+
+Starting test
+test finished
+Max Latency: 11us
+Samples recorded: 19
+Samples exceeding threshold: 19
+ts: 1575278656.298073809, inner:11, outer:0
+ts: 1575278666.378306062, inner:11, outer:0
+ts: 1575278678.983596494, inner:0, outer:11
+ts: 1575278689.063828747, inner:0, outer:11
+ts: 1575278699.144061000, inner:11, outer:0
+ts: 1575278709.223297109, inner:0, outer:11
+ts: 1575278845.802490378, inner:11, outer:0
+ts: 1575278888.647447688, inner:0, outer:11
+ts: 1575278898.727670421, inner:11, outer:0
+ts: 1575278908.807885759, inner:0, outer:11
+ts: 1575278918.887101039, inner:0, outer:11
+ts: 1575279045.386899838, inner:11, outer:0
+ts: 1575279055.466121606, inner:0, outer:11
+ts: 1575279065.546343347, inner:0, outer:11
+ts: 1575279075.626565146, inner:11, outer:0
+ts: 1575279098.311066652, inner:0, outer:11
+ts: 1575279108.391292081, inner:0, outer:11
+ts: 1575279118.471517510, inner:0, outer:11
+ts: 1575279128.551742939, inner:0, outer:11
+

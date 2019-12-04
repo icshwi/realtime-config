@@ -1,0 +1,13 @@
+alsa-state
+bolt
+firewalld
+ModemManager
+wpa_supplicant
+avahi-daemon
+avahi-daemon.socket
+unbound-anchor
+bluetooth
+pppd-dns
+sound
+pcscd
+#
