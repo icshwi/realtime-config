@@ -18,9 +18,9 @@
 #
 # Author  : Jeong Han Lee
 # email   : jeonghan.lee@gmail.com
-# Date    : Thursday, November 21 16:54:13 CET 2019
+# Date    : Thursday, December  5 12:15:46 CET 2019
 #
-# version : 0.1.6
+# version : 0.2.0
 
 # Only aptitude can understand the extglob option
 shopt -s extglob
@@ -236,7 +236,11 @@ case "$dist" in
 	centos_rt_conf;
 	add_user_rtgroup;
 	boot_parameters_conf
-	${SUDO_CMD} grub2-mkconfig -o /boot/grub2/grub.cfg
+	if [ -d "/system/firmware/efi" ]; then
+	    ${SUDO_CMD} grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
+	else
+	    ${SUDO_CMD} grub2-mkconfig -o /boot/grub2/grub.cfg
+	fi
 	;;
     *)
 	printf "\n";
