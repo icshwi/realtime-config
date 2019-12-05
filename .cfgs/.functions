@@ -192,10 +192,21 @@ function disable_system_service
     
     printf "Disable service ... %s\n" "${disable_services}"
     ${SUDO_CMD} systemctl stop    ${disable_services} | echo ">>> Stop    : $disable_services do not exist"
-    ${SUDO_CMD} systemctl disable ${disable_services} | echo ">>> Disalbe : $disable_services do not exist"
+    ${SUDO_CMD} systemctl disable ${disable_services} | echo ">>> Disable : $disable_services do not exist"
+}
+
+
+function mask_system_service
+{
+    local disable_services=$1; shift
+    
+    printf "Disable service ... %s\n" "${disable_services}"
+    ${SUDO_CMD} systemctl stop    ${disable_services} | echo ">>> Stop    : $disable_services do not exist"
+    ${SUDO_CMD} systemctl disable ${disable_services} | echo ">>> Disable : $disable_services do not exist"
     ${SUDO_CMD} systemctl mask    ${disable_services} | echo ">>> Mask    : $disable_services do not exist"
 
 }
+
 
 
 common_services="$(get_conf_list ${SC_TOP}/.SYSTEMD_SERVICES_COMMON)"

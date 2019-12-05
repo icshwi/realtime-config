@@ -18,9 +18,9 @@
 #
 # Author  : Jeong Han Lee
 # email   : jeonghan.lee@gmail.com
-# Date    : Thursday, December  5 12:15:46 CET 2019
+# Date    : Thursday, December  5 13:45:19 CET 2019
 #
-# version : 0.2.0
+# version : 0.2.1
 
 # Only aptitude can understand the extglob option
 shopt -s extglob
@@ -52,7 +52,7 @@ function centos_restore_generic_repo
     if [ "$clean_ess" = "clean" ]; then
 	
 	for bservice in ${essvm_services[@]}; do
-	    disable_system_service $bservice
+	    mask_system_service $bservice
 	done
 	
 	${SUDO_CMD} rm -rf /etc/yum.repos.d/{ESS-*,elastic-*,zabbix-*}
@@ -171,6 +171,17 @@ function debian_pkgs
 }
 
 
+## not used, but potential in near future
+function rt_boot_parameter_builder
+{
+    local default="idle=poll intel_idle.max_cstate=0 processor.max_cstate=1 skew_tick=1";
+    local output=""
+
+    output+=${defalut};
+    output+="  pci=nomsi,noaer";
+     
+    echo ${output};
+}
 
 function boot_parameters_conf
 {
@@ -236,11 +247,14 @@ case "$dist" in
 	centos_rt_conf;
 	add_user_rtgroup;
 	boot_parameters_conf
+	# There is a possible change in UEFI and legacy, so
+	# we keep both if we see EFI path
+	# 
 	if [ -d "/system/firmware/efi" ]; then
 	    ${SUDO_CMD} grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
-	else
-	    ${SUDO_CMD} grub2-mkconfig -o /boot/grub2/grub.cfg
 	fi
+	${SUDO_CMD} grub2-mkconfig -o /boot/grub2/grub.cfg
+	
 	;;
     *)
 	printf "\n";
@@ -253,9 +267,11 @@ esac
 
 
 for aservice in ${common_services[@]}; do
-    disable_system_service $aservice
+    mask_system_service $aservice
 done
 
+
+disable_system_service tuned
 
 printf "\n"
 printf "Reboot your system in order to use the RT kernel\n";
