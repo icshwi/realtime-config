@@ -236,7 +236,7 @@ case "$dist" in
 	centos_rt_conf;
 	add_user_rtgroup;
 	boot_parameters_conf
-	${SUDO_CMD} grub2-mkconfig –o /boot/grub2/grub.cfg
+	${SUDO_CMD} grub2-mkconfig -o /boot/grub2/grub.cfg
 	;;
     *)
 	printf "\n";
