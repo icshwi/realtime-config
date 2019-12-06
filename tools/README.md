@@ -1,17 +1,22 @@
 
-
+# the Running Average on the fly
+```
 camonitor  IOC_TEST:MCU-thread-latency-max  | awk -f RunningAverage.awk
+```
 
+# Post Analysis 
 
-# How to make csv file
+## How to make csv file
 ```
 camonitor -F,  IOC_TEST:MCU-thread-latency-max  > 1.csv
 ```
 
+## Run ROOT to check it. 
 
-# Run ROOT to check it. 
-``
+Filename (csv file) must be matched with the above. Once we create `1.csv.root`, one doesn't need to create again. In this cae, one can specifiy each file within the plot function such as `plot(1000, 1, "filename")
 
+
+```
 $ root 
    ------------------------------------------------------------
   | Welcome to ROOT 6.18/04                  https://root.cern |
@@ -22,7 +27,7 @@ $ root
    ------------------------------------------------------------
 
 root [0] .L analyze.C
-root [1] saveRootFile()
+root [1] saveRootFile("1.csv")
 root [1] plot()
 root [2] plot(1000,30)
 root [3] plot(3000)
@@ -32,6 +37,7 @@ root [4] plot(5000, 5000)
 |![plot](1.csv.root_1000_1_threadlatency.png)|
 | :---: |
 |**Figure 1** Canvas Example Image. |
+
 ```
 $ root
 root [0] new TBrowser
