@@ -29,13 +29,23 @@ root [3] plot(3000)
 root [4] plot(5000, 5000)
 ```
 
+|![plot](1.csv.root_1000_1_threadlatency.png)|
+| :---: |
+|**Figure 1** Canvas Example Image. |
 ```
 $ root
 root [0] new TBrowser
 ```
 
+
+
 ## Notice
-More than 10k points, it needs more time to plot time series graph. But Histtogram will be shown up quickly (less than 10s) than the graph (.
+More than 10k points, it needs more time to plot time series graph. But Histtogram will be shown up quickly (less than 10s) than the graph (15mins).
+
+Thus, I tried to speed up a bit, so one can ignore the following error right now. I will investigate them later.
+```
+Error in <TTree::SetBranchAddress>: The pointer type given "Double_t" (8) does not correspond to the type needed "Char_t" (1) by the branch: Date
+```
 
 
 

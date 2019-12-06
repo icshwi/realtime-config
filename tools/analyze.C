@@ -119,48 +119,55 @@ void plot(Int_t nentries=1000, Int_t start_entry=1, TString filename="1.csv.root
   gPad->SetGridy();
   // Slow...
   
-  Int_t n = event_tree->Draw("Data:Date","","", nentries,start_entry);
-  printf("The arrays' dimension is %d\n",n);
-  TGraph *graph = (TGraph*)gPad->GetPrimitive("Graph");
-  TH2F   *htemp = (TH2F*)gPad->GetPrimitive("htemp");
-  graph->SetLineColor(kRed);
-  graph->SetLineWidth(1);
-  htemp->SetTitle("");
-  htemp->GetXaxis()->SetTitle("Time");
-  htemp->GetYaxis()->SetTitle("Latency Max (nsec)");
-  graph->Draw("LINE");
+  // Int_t n = event_tree->Draw("Data:Date","","", nentries,start_entry);
+  // printf("The arrays' dimension is %d\n",n);
+  // TGraph *graph = (TGraph*)gPad->GetPrimitive("Graph");
+  // TH2F   *htemp = (TH2F*)gPad->GetPrimitive("htemp");
+  // graph->SetLineColor(kRed);
+  // graph->SetLineWidth(1);
+  // htemp->SetTitle("");
+  // htemp->GetXaxis()->SetTitle("Time");
+  // htemp->GetYaxis()->SetTitle("Latency Max (nsec)");
+  // graph->Draw("LINE");
 
 
 
-  // Float_t Data;
-  // Double_t Date;
-  // event_tree->SetBranchAddress("Data",&Data);
-  // event_tree->SetBranchAddress("Date",&Date);
+  Float_t Data;
+  Double_t Date;
+  event_tree->SetBranchAddress("Data",&Data);
+  event_tree->SetBranchAddress("Date",&Date);
    
   
-  // Int_t n = event_tree->Draw("Data:Date","","l", nentries,start_entry);
-  // printf("The arrays' dimension is %d\n",n);
+  Int_t n = event_tree->Draw("Data:Date","","l", nentries,start_entry);
+  printf("The arrays' dimension is %d\n",n);
 
   
-  // Double_t xbins[n];
-  // Int_t i;
-  // for (i=0;i<n;i++) {
-  //     event_tree->GetEvent(i);
-  //     xbins[i] = Date;
-  //  }
-  // TH1D *h= new TH1D("h","h",n-1,xbins);
+  Double_t xbins[n];
+  Int_t i;
+  for (i=0;i<n;i++) {
+    event_tree->GetEvent(i);
+    xbins[i] = Date;
+  }
+  TH1D *h= new TH1D("h","h",n-1,xbins);
 
-  // for (i=0;i<n;i++) {
-  //   event_tree->GetEvent(i);
-  //   h->Fill(Date,Data);
-  // }
+  for (i=0;i<n;i++) {
+    event_tree->GetEvent(i);
+    h->Fill(Date,Data);
+  }
 
-  //  h->SetLineColor(kRed);
-
-  //  h->Draw("hist same");
+  h->SetTitle("");
+  h->GetXaxis()->SetTitle("Time");
+  h->GetYaxis()->SetTitle("Latency Max (nsec)");
+  h->SetLineColor(kRed);
+  h->Draw("hist same");
  
   gPad->Update();
 
   fCanvas-> Modified();
   fCanvas-> Update();
+
+  TImage *img = TImage::Create();
+  img->FromPad(fCanvas);
+  img->WriteImage(Form("%s_%d_%d_threadlatency.png", filename.Data(), nentries, start_entry));
+
 }
