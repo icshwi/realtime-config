@@ -10,8 +10,7 @@ camonitor -F,  IOC_TEST:MCU-thread-latency-max  > 1.csv
 
 
 # Run ROOT to check it. 
-``
-
+```
 $ root 
    ------------------------------------------------------------
   | Welcome to ROOT 6.18/04                  https://root.cern |
