@@ -18,15 +18,6 @@
 // email   : jeonghan.lee@gmail.com
 // Date    : Thursday, December  5 17:13:36 CET 2019
 
-// For example,
-// 1) run root
-// 2) .L analyze.C
-// 3) saveRootFile()
-// 4) plots()
-// or
-// 4) plot(10000)
-//
-
 
 #include <iostream>
 #include "TApplication.h"
