@@ -15,7 +15,7 @@ cat 1.csv | awk -f RunningAverage.awk
 
 ## Run ROOT to check it. 
 
-Filename (csv file) must be matched with the above. Once we create `1.csv.root`, one doesn't need to create again. In this cae, one can specifiy each file within the plot function such as `plot(1000, 1, "filename")
+Filename (csv file) must be matched with the above. Once we create `1.csv.root`, one doesn't need to create again. 
 
 
 ```
