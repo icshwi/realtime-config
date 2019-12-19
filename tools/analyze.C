@@ -113,7 +113,7 @@ void plots(TString filename="1.csv.root")
   // graph->SetLineColor(kRed);
   graph->SetLineWidth(1);
   //  htemp->SetTitle(Form("MCU Thread Latency Max Time Series at %s", filename.Data()));
-  htemp->GetXaxis()->SetTitle("Time");
+  htemp->GetXaxis()->SetTitle("Time (sec)");
   htemp->GetYaxis()->SetTitle("Latency Max (nsec)");
   graph->Draw("LINE");
 
@@ -217,10 +217,10 @@ void plotTSGraph(TString filename="1.csv.root")
   event_tree->Draw("Data:Time");
   TGraph *graph = (TGraph*)gPad->GetPrimitive("Graph");
   TH2D   *htemp = (TH2D*)gPad->GetPrimitive("htemp");
-  // graph->SetLineColor(kRed);
+  graph->SetLineColor(kRed);
   graph->SetLineWidth(1);
   //  htemp->SetTitle(Form("MCU Thread Latency Max Time Series at %s", filename.Data()));
-  htemp->GetXaxis()->SetTitle("Time");
+  htemp->GetXaxis()->SetTitle("Time (sec)");
   htemp->GetYaxis()->SetTitle("Latency Max (nsec)");
   graph->Draw("LINE");
 

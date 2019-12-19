@@ -18,9 +18,9 @@
 #
 # Author  : Jeong Han Lee
 # email   : jeonghan.lee@gmail.com
-# Date    : Thursday, December  5 13:45:19 CET 2019
+# Date    : Thursday, December  19 10:54:19 CET 2019
 #
-# version : 0.2.1
+# version : 0.2.2
 
 # Only aptitude can understand the extglob option
 shopt -s extglob
@@ -171,18 +171,6 @@ function debian_pkgs
 }
 
 
-## not used, but potential in near future
-function rt_boot_parameter_builder
-{
-    local default="idle=poll intel_idle.max_cstate=0 processor.max_cstate=1 skew_tick=1";
-    local output=""
-
-    output+=${defalut};
-    output+="  pci=nomsi,noaer";
-     
-    echo ${output};
-}
-
 function boot_parameters_conf
 {
 
@@ -220,8 +208,27 @@ function boot_parameters_conf
 
     ${SED} "s|^GRUB_CMDLINE_LINUX=.*|GRUB_CMDLINE_LINUX=${new_grub_cmdline_linux}|g" ${GRUB_CONF} | ${SUDO_CMD} tee ${GRUB_CONF}  >/dev/null
 
+}
 
 
+function printf_tee
+{
+    local input=${1};
+    local target=${2};
+    # If target exists, it will be overwritten.
+    ${SUDO_CMD} printf "%s" "${input}" | ${SUDO_CMD} tee "${target}";
+};
+
+
+function tuned_configure
+{
+    
+    local target="/etc/tuned/realtime-variables.conf"
+    local rule="isolated_cores=0"
+
+    printf_tee "$rule" "$target";
+
+    ${SUDO_CMD} tuned-adm profile realtime
 }
 
 ANSWER="NO"
@@ -270,8 +277,7 @@ for aservice in ${common_services[@]}; do
     mask_system_service $aservice
 done
 
-
-disable_system_service tuned
+tuned_configure
 
 printf "\n"
 printf "Reboot your system in order to use the RT kernel\n";
