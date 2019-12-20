@@ -39,8 +39,15 @@ we need to move forward. Please use the generic CentOS 7.
 Use the default Debian repository
 
 ## CentOS 7
-Use the CERN CentOS 7 rt repository [1]. Note that CentOS 7 should be generic one. 
-
+* Use the CERN CentOS 7 rt repository [1]. Note that CentOS 7 should be generic one. 
+* Disable all repositories in order to keep the one RT kernel
+```
+yum-config-manager --disable \*
+```
+* Set the default kernel to the RT kernel
+```
+grubby --set-default-kernel=/boot/vmlinuz-3.10.0-1062.9.1.rt56.1033.el7.x86_64
+```
 
 # Tuning the Kernel boot parameters
 
