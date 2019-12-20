@@ -158,7 +158,7 @@ function centos_pkgs
     printf "Removing .... %s\n" ${remove_pkg_name}
     ${SUDO_CMD} yum -y remove postfix sendmail cups
     printf "Installing .... ethtool\n";
-    ${SUDO_CMD} yum -y install ethtool numactl-devel
+    ${SUDO_CMD} yum -y install ethtool numactl-devel yum-utils
 }
 
 function debian_pkgs
