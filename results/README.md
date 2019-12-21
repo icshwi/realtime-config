@@ -83,8 +83,6 @@ set that one into its configuration.
 
 
 
-```
-
 ### Typical Setup Procedure
 
 ```
