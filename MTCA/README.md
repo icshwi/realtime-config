@@ -74,7 +74,6 @@ require ecmc        "6.0.1"
 
 
 
-```
 ## How to split the root file more than 100MiB
 ```
 split -b 90M 01RT_MTCA.csv.root
