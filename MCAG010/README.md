@@ -66,12 +66,10 @@ cache size	: 512 KB
 # PATH="/epics/base-7.0.3/require/3.1.2/bin:/epics/base-7.0.3/bin/linux-x86_64:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/iocuser/.local/bin:/home/iocuser/bin"
 # LD_LIBRARY_PATH="/epics/base-7.0.3/lib/linux-x86_64:/epics/base-7.0.3/require/3.1.2/lib/linux-x86_64:/epics/base-7.0.3/require/3.1.2/siteLibs/linux-x86_64"
 # --->--> snip -->--> 
-
 ```
 
 
 
-```
 ## How to split the root file more than 100MiB
 ```
 split -b 90M 01RT_MCAG010.csv.root
@@ -128,7 +126,7 @@ Dec 20 12:20:57 mcu010 systemd[1]: Started Dynamic System Tuning Daemon.
 Current active profile: realtime
 
     Tune Realtime variable 
-# Examples:
+
 isolated_cores=0
 # isolated_cores=2,4-7
 # isolated_cores=2-23
