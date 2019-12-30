@@ -1,6 +1,8 @@
 Beckhoff CPU : CX5130
 ===
 
+# ecmc stable version
+
 ## The Baseline Configuration Latency Result
 
  
@@ -139,3 +141,21 @@ TUNED_BOOT_CMDLINE="isolcpus=0 intel_pstate=disable nosoftlockup skew_tick=1"
 TUNED_BOOT_INITRD_ADD=""
 
 ```
+
+
+# ecmc development version
+
+
+## The Baseline Configuration Latency Result
+
+* Data sample : 60090399
+* Mean : 13705.09 nsec
+* Sample deviation : 1051.17 nsec
+* Standard deviation : 1051.17 nsec
+
+
+
+|![plot](01RT_MCAG010_dev.csv.root_threadlatency.png)|
+| :---: |
+|**Figure 2** Beckhoff CPU CX5130 Latency Max Plots with the ecmc development version. |
+

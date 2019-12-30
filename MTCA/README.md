@@ -1,6 +1,8 @@
 MTCA Concurrent CPU
 ===
 
+# ecmc stable version
+
 ## The Baseline Configuration Latency Result
 
 
@@ -131,3 +133,24 @@ isolated_cores=0
 TUNED_BOOT_CMDLINE="isolcpus=0 intel_pstate=disable nosoftlockup skew_tick=1"
 TUNED_BOOT_INITRD_ADD=""
 ```
+
+
+
+
+# ecmc development version
+
+
+## The Baseline Configuration Latency Result
+
+* Data sample : 60331233
+* Mean : 4446.90 nsec
+* Sample deviation : 698.06 nsec
+* Standard deviation : 698.06 nsec
+
+
+
+|![plot2](01RT_MTCA_dev.csv.root_threadlatency.png)|
+| :---: |
+|**Figure 2** MTCA Latency Max Plots with the ecmc development version. |
+
+
