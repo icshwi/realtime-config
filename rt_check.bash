@@ -17,9 +17,9 @@
 #
 # Author  : Jeong Han Lee
 # email   : jeonghan.lee@gmail.com
-# Date    : Thursday, December 19 11:43:03 CET 2019
+# Date    : Monday, December 30 11:58:55 CET 2019
 #
-# version : 0.0.1
+# version : 0.0.2
 
 declare -gr SC_SCRIPT="$(realpath "$0")"
 declare -gr SC_SCRIPTNAME=${0##*/}
@@ -28,6 +28,9 @@ declare -gr SC_LOGDATE="$(date +%y%m%d%H%M)"
 
 # declare -gr SUDO_CMD=$(which sudo);
   
+printf "\n>>> Current System Clock Source : it should be tsc.\n";
+cat /sys/devices/system/clocksource/clocksource0/current_clocksource
+
 printf "\n>>> Boot Cmdline \n";
 cat /proc/cmdline
 
