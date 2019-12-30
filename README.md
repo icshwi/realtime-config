@@ -100,7 +100,7 @@ Disable Power Saving and other features.
 
 ## irqbalance
 
-At the baseline of the configuration, we would like not to **use** the irqbalance with Linux PREEMPT RT kernel. Note that one should check its status via `systemctl status irqbalance` after rebooting with RT kernel. Or one can use `rt_check.bash`. 
+At the baseline of the configuration, we would like **not** to use the irqbalance with Linux PREEMPT RT kernel. Note that one should check its status via `systemctl status irqbalance` after rebooting with RT kernel. Or one can use `rt_check.bash`. 
 
 ```
 >>> System service : irqbalance
