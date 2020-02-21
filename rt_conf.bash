@@ -234,7 +234,7 @@ function tuned_configure
 ANSWER="NO"
 
 dist=$(find_dist)
-
+echo "DISTRIBUTION: $dist"
 case "$dist" in
     *"stretch"*)
 	if [ "$ANSWER" == "NO" ]; then
@@ -263,6 +263,25 @@ case "$dist" in
 	${SUDO_CMD} grub2-mkconfig -o /boot/grub2/grub.cfg
 	
 	;;
+    *"CentOS Core 7"*)
+	if [ "$ANSWER" == "NO" ]; then
+	    yes_or_no_to_go "CentOS Linux 7 is detected as $dist"
+	fi
+	centos_restore_generic_repo "$1"
+	centos_pkgs;
+	centos_rt_conf;
+	add_user_rtgroup;
+	boot_parameters_conf
+	# There is a possible change in UEFI and legacy, so
+	# we keep both if we see EFI path
+	# 
+	if [ -d "/system/firmware/efi" ]; then
+	    ${SUDO_CMD} grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
+	fi
+	${SUDO_CMD} grub2-mkconfig -o /boot/grub2/grub.cfg
+	
+	;;
+
     *)
 	printf "\n";
 	printf "Doesn't support the detected $dist\n";
