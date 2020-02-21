@@ -20,6 +20,7 @@ BEGIN {
     sd0   = 0
     sample_deviation = 0
     standard_deviation = 0
+    max = 0
 }
 
 {
@@ -30,6 +31,10 @@ BEGIN {
     sd1     = sd0 + ( x - mean0 )*( x - mean1 )
     mean0   = mean1
     sd0     = sd1
+    
+    if (x >max ) {
+      max = x
+    }
 
     if (count !=0 && sd0 != 0) {
     sample_deviation   = sqrt(1/(count-1)*sd0)
@@ -37,8 +42,8 @@ BEGIN {
     }
     mean_user = (mean0_user + mean0)*0.5
     SD_user   = sqrt(((sample_deviation_user)^2)+((sample_deviation)^2))
-
-    printf "Count/x/Mean/SaD/STD : %8d %12.2lf %12.2lf %12.2lf %12.2lf \n", count, x, mean0, sample_deviation,  standard_deviation;
+    
+    printf "Count/x/Mean/SaD/STD/Max : %8d %12.2lf %12.2lf %12.2lf %12.2lf %8d \n", count, x, mean0, sample_deviation,  standard_deviation,max;
  
 }
 
@@ -50,6 +55,7 @@ END {
     printf "Mean               : %16.4lf\n", mean0
     printf "Sample Deviation   : %16.4lf\n", sample_deviation
     printf "Standard Deviation : %16.4lf\n", standard_deviation
+    printf "Maximum            : %16d\n",    max
     printf "\n"
 
 }
