@@ -124,15 +124,12 @@ EOF
     add_user_to_group "$user" "realtime";
 }
 
-
 function add_realtime_debian
 {
     local user="$1"; shift;
     create_group "realtime";
     add_user_to_group "$user" "realtime";
 }
-
-
 
 function debian_rt_conf
 {
@@ -148,8 +145,7 @@ function debian_rt_conf
     #
     add_realtime_debian $user;
 
-    ${SUDO_CMD} install -m 644 ${SC_TOP}/conf/realtime.conf /etc/security/limits.d/
-    
+    ${SUDO_CMD} install -m 644 ${SC_TOP}/conf/realtime.conf /etc/security/limits.d/    
 }
 
 function centos_pkgs
@@ -190,7 +186,6 @@ function boot_parameters_conf
     
     grub_cmdline_linux=$(drop_from_path "${existent_cmdline}" "${drop_cmdline_linux}")
 
-
     grub_cmdline_linux+=" "
     grub_cmdline_linux+=${rt_boot_parameter}
     new_grub_cmdline_linux=\"${grub_cmdline_linux}\"
@@ -202,12 +197,12 @@ function boot_parameters_conf
     printf "     We are adding %s into GRUB_CMDLINE_LINUX in the file %s.\n" "${rt_boot_parameter}" "${GRUB_CONF}"
     printf "     If something goes wrong, you can revert them with the backup file, e.g., grub.bk\n"
     printf "     Please check grub.bk in the %s\n" "${GRUB_CONF%/*}/"
-    printf ">>>>>\n\n"
+    printf ">>>>>\n\n"    
 
     ${SUDO_CMD} cp -b ${GRUB_CONF} ${GRUB_CONF%/*}/grub.bk
 
     ${SED} "s|^GRUB_CMDLINE_LINUX=.*|GRUB_CMDLINE_LINUX=${new_grub_cmdline_linux}|g" ${GRUB_CONF} | ${SUDO_CMD} tee ${GRUB_CONF}  >/dev/null
-
+    
 }
 
 
@@ -257,7 +252,7 @@ case "$dist" in
 	# There is a possible change in UEFI and legacy, so
 	# we keep both if we see EFI path
 	# 
-	if [ -d "/system/firmware/efi" ]; then
+	if [ -d "/system/firmware/efi"  -o -d "/sys/firmware/efi" ]; then        
 	    ${SUDO_CMD} grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
 	fi
 	${SUDO_CMD} grub2-mkconfig -o /boot/grub2/grub.cfg
@@ -275,7 +270,7 @@ case "$dist" in
 	# There is a possible change in UEFI and legacy, so
 	# we keep both if we see EFI path
 	# 
-	if [ -d "/system/firmware/efi" ]; then
+	if [ -d "/system/firmware/efi"  -o -d "/sys/firmware/efi" ]; then
 	    ${SUDO_CMD} grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
 	fi
 	${SUDO_CMD} grub2-mkconfig -o /boot/grub2/grub.cfg
