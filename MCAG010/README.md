@@ -143,8 +143,9 @@ TUNED_BOOT_INITRD_ADD=""
 
 # ecmc development version
 
-
 ## The Baseline Configuration Latency Result
+This was the first trial of testing feasability of a new motor record support for ecmc. See next chapter for results after 
+development was finalized.
 
 * Data sample : 60090399
 * Mean : 13705.09 nsec
@@ -152,8 +153,30 @@ TUNED_BOOT_INITRD_ADD=""
 * Standard deviation : 1051.17 nsec
 
 
-
 |![plot](01RT_MCAG010_dev.csv.root_threadlatency.png)|
 | :---: |
 |**Figure 2** Beckhoff CPU CX5130 Latency Max Plots with the ecmc development version. |
 
+
+# Latency comparison ecmcMotorRecord support vs EthercatMC
+
+The comparsion was made on a Beckhoff 2 core CX5130 CPU.
+A Python script (pyEpics) was sending commands to move a motion axis back and forward during the whole test.
+
+## EthercatMC
+
+|![plot](ethercatMC_ecmc_threadlatency.png)|
+| :---: |
+|**Figure 2** Beckhoff CPU CX5130 Latency Max Plots with EthercatMC motor record support. |
+
+## ecmcMotorRecord
+
+|![plot](ecmcMotorRecord_ecmc_threadlatency.png)|
+| :---: |
+|**Figure 2** Beckhoff CPU CX5130 Latency Max Plots with ecmcMotorRecord support. |
+
+## Conclusion
+
+Standard deviation and maximum latency are reduced by approx a factor 5 when using ecmcMotorRecord compared to when using EthercatMC. 
+The reason for higher latencies when using EthercatMC is because it uses the asynOctet interface and significant parsing of ASCII commands are needed. ecmcMotorRecord have direct memory access to ecmc which makes communication more effichient less prone to disturb the realtime loop. A mutex ensures that ecmcMotorRecord and ecmc is in sync.
+To conclude, the preferred choice of motor record support is ecmcMotorRecord (already default in ecmccfg). However, EthercatMC is still supported so if any issues with ecmcMotorRecord then EthercatMC can be used
