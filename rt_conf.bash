@@ -240,6 +240,17 @@ case "$dist" in
 	boot_parameters_conf
 	${SUDO_CMD} update-grub
 	;;
+
+    *"buster"*)
+        if [ "$ANSWER" == "NO" ]; then
+            yes_or_no_to_go "Debian Buster is detected as $dist"
+        fi
+        debian_pkgs
+        debian_rt_conf
+        boot_parameters_conf
+        ${SUDO_CMD} update-grub
+        ;;
+
     *"CentOS Linux 7"*)
 	if [ "$ANSWER" == "NO" ]; then
 	    yes_or_no_to_go "CentOS Linux 7 is detected as $dist"
